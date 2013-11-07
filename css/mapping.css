@@ -1,0 +1,8 @@
+﻿body { background-color: #fff; color: #111; font-family: Arial; margin: auto; }
+h1 { padding-left: 20px; }
+h2 {padding-left: 20px;} 	
+div.map_container { position: relative; }
+div.map_container span.point { border: 1px solid #fff; cursor: pointer; display: inline-block; height: 15px; position: absolute; width: 15px; }
+div.map_container div.popup {   }
+div.map_container span.inside { background-color: #9FF ; opacity: 0; width: 100px; border: 1px solid #666; }
+div.map_container span.point span.inside {  }

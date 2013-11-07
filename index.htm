@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Denihan Image Mapping Popup Plugin</title>
+    <link rel="Stylesheet" href="css/mapping.css" />
+    <link href="css/jquery-bubble-popup-v3.css" rel="stylesheet" type="text/css" />
+	<script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
+	<script src="js/jquery-bubble-popup-v3.min.js" type="text/javascript"></script>
+
+    
+<script type="text/javascript">
+<!--
+$(document).ready(function(){
+
+		// <AREA> tags are invisible elements inside the DOM, 
+		// therefore to attach correctly a bubble popup to them, 
+		// we need to display and position <AREA> tags...
+
+		$('area').css({ display: 'block'});
+		$('area').offset({ top: $('img').offset().top, left: $('img').offset().left });
+
+		//create bubble popups for each area tag and disable mouse events...
+		$('area').CreateBubblePopup({ innerHtmlStyle: 	  	{ color:'#FFFFFF', 'text-align':'center' },
+									  themeName: 	  	 	'all-black',
+									  themePath: 	  	 	'jquerybubblepopup-themes',
+									  manageMouseEvents:	false 
+								   });
+
+		// all popups of <AREA> tags are invisible
+		$('area').data('visible', false);
+		
+		//set a timer
+		var timer;
+		
+		// add a customized mouseover event for each <AREA> tag...
+		$('area').mouseover(function(){
+		
+				clearTimeout(timer);
+		
+				if( !$(this).data('visible') ){
+				
+					// all popups must be invisible, but only this one is visible
+					$('area').data('visible', false);
+					$(this).data('visible', true);
+					
+					//hide all popups, update the innerHtml and show this popup
+					$('area').HideAllBubblePopups();
+					$(this).SetBubblePopupInnerHtml( $(this).attr('alt') );
+					$(this).ShowBubblePopup();
+					
+					//get <IMG> position and <AREA> coordinates...
+					var img_position = $('img').offset();
+					var img_top = parseInt(img_position.top);
+					var img_left = parseInt(img_position.left);
+					var area_x = parseInt($(this).attr('coords').split(',')[0]);
+					var area_y = parseInt($(this).attr('coords').split(',')[1]);
+					var bubble_width  = parseInt($('#'+$(this).GetBubblePopupID()).outerWidth(false));
+					var bubble_height = parseInt($('#'+$(this).GetBubblePopupID()).outerHeight(false));
+				
+					//move the bubble popup to the <AREA> coordinates...
+					$('#'+$(this).GetBubblePopupID()).css({ top: (area_y+img_top-bubble_height)+'px', left: (area_x+img_left-Math.abs(bubble_width/2))+'px' });
+				
+				};
+		});
+
+		//if the mouse leaves the <AREA>, wait 3 seconds then hide all bubble poups...
+		$('area').mouseleave(function(){
+
+			if( $(this).data('visible') ){
+				var seconds_to_wait = 2;
+				function doCountdown(){
+					timer = setTimeout(function(){
+						seconds_to_wait--;
+						if(seconds_to_wait > 0){
+							doCountdown();
+						}else{
+							clearTimeout(timer);
+							$('area').HideAllBubblePopups();
+							$('area').data('visible', false);
+						};
+					},1000);
+				};
+				doCountdown();
+			};
+			
+		});
+
+});
+//-->
+</script>
+
+
+</head>
+<body class="lang-EN miami">
+    <header>
+        <h1 id="logo">James Royal Palm</h1>
+        <h2>Meetings & Event Space</h2>
+    </header>
+    
+    
+    <div class="page">
+	<div class="content">
+
+		
+						<img src="img/JRP-capacity-chart-final-9.gif" alt="Floorplan" usemap="#map" />
+						<map name="map">
+						<area shape="circle" coords="668,383,15" href="#null" alt="The Den East: 15 x 15 x 7 | 225 sq ft ">
+						<area shape="circle" coords="668,403,15" href="#null" alt="The Den West: 28 x 15 x 7 | 420 sq ft ">
+                        <area shape="circle" coords="668,425,15" href="#null" alt="The Boardroom: 24 x 14 x 7 | 3 sq ft ">
+						</map>
+						<!--
+						coordinates values of the <AREA> tags:
+						
+						x1,y1,x2,y2				-> If the shape attribute is set to "rect", it specifies the coordinates of the top-left corner and the bottom-right corner of the rectangle
+						x,y,radius				-> If the shape attribute is set to "circle", it specifies the coordinates of the circle center and the radius
+						x1,y1,x2,y2,..,xn,yn	-> If the shape attribute is set to "poly", it specifies the coordinates of the edges of the polygon. If the first and last coordinate pairs are not the same, the browser must add the last coordinate pair to close the polygon
+						
+						for more information, take a look at http://www.w3schools.com/tags/att_area_coords.asp
+						-->
+					
+
+</div>
+    
+    
+    
+    <!--<script src="js/denihan.toggler.js"></script>
+    <script src="js/denihan.map.js"></script>
+    <script src="js/denihan.demo.load.js"></script>-->
+
+   
+</body>
+</html>
